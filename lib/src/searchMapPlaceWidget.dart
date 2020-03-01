@@ -3,6 +3,7 @@ part of search_map_place;
 class SearchMapPlaceWidget extends StatefulWidget {
   SearchMapPlaceWidget({
     @required this.apiKey,
+    @required this.textEditingController,
     this.placeholder = 'Search',
     this.icon = Icons.search,
     this.iconColor = Colors.blue,
@@ -52,12 +53,14 @@ class SearchMapPlaceWidget extends StatefulWidget {
   /// The color of the icon to show in the search box
   final Color iconColor;
 
+  final TextEditingController textEditingController;
+  
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
 }
 
 class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with SingleTickerProviderStateMixin {
-  TextEditingController _textEditingController = TextEditingController();
+  //TextEditingController _textEditingController = TextEditingController();
   AnimationController _animationController;
   // SearchContainer height.
   Animation _containerHeight;
@@ -138,7 +141,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
           Expanded(
             child: TextField(
               decoration: _inputStyle(),
-              controller: _textEditingController,
+              controller: this.widget.textEditingController,
               style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
               onChanged: (value) => setState(() => _autocompletePlace(value)),
             ),
@@ -229,7 +232,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
     /// Will be called when a user selects one of the Place options.
 
     // Sets TextField value to be the location selected
-    _textEditingController.value = TextEditingValue(
+    this.widget.textEditingController.value = TextEditingValue(
       text: prediction.description,
       selection: TextSelection.collapsed(offset: prediction.description.length),
     );
